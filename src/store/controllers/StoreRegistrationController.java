@@ -10,13 +10,13 @@ import javax.servlet.http.HttpSession;
 import store.business.User;
 import store.utility.MysqlCon;
 
-public class RegistrationController extends HttpServlet {
+public class StoreRegistrationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/**
      * @see HttpServlet#HttpServlet()
      */
-    public RegistrationController() {
+    public StoreRegistrationController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,13 +30,13 @@ public class RegistrationController extends HttpServlet {
 		if(session.getAttribute("loggedin") != null && 
 				(Boolean)session.getAttribute("loggedin") == true) {
 			String url = "/home.jsp";
-			System.out.println("registration redirect to: " + url);
+			System.out.println("store registration redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
 		} else {
 			// if not display the registration page
-			String url = "/views/registration.jsp";
-			System.out.println("registration redirect to: " + url);
+			String url = "/views/store_registration.jsp";
+			System.out.println("store registration redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
 		}
@@ -46,6 +46,7 @@ public class RegistrationController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String store_name = request.getParameter("store_name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String confirm_password = request.getParameter("confirm_password");
@@ -55,36 +56,52 @@ public class RegistrationController extends HttpServlet {
 		String city = request.getParameter("city");
 		String state = request.getParameter("state");
 		String zip = request.getParameter("zip");
-		String country = "US"; 
+		String country = "US";
 		
 		if (!password.equals(confirm_password)) {
 			// a user with the account already exists
-			String url = "/views/registration.jsp";
-			System.out.println("registration redirect pass not equal to: " + url);
+			String url = "/views/store_registration.jsp";
+			System.out.println("store registration redirect pass not equal to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
 		} else if(MysqlCon.validateUser(email, password)) {
 			// a user with the account already exists
-			String url = "/views/registration.jsp";
-			System.out.println("registration redirect other user to: " + url);
+			String url = "/views/store_registration.jsp";
+			System.out.println("store registration redirect other user to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
-		} else if(email != "" && password != "" && first_name != "" &&
+		} else if(store_name != "" && email != "" && password != "" && first_name != "" &&
 				  last_name != "" && address != "" && city != "" &&
 				  state != "" && zip != "" && country != "") {
-			// set first name last name
-			Boolean res = MysqlCon.insert_user(first_name, last_name, email, password, address, city, state, zip, country, 1);
+			// check if store name is available
+			Boolean res = MysqlCon.validateStoreName(store_name);
+			if (res) {
+				// a store already exists with this name
+				// send back error
+				String url = "/views/store_registration.jsp";
+				System.out.println("store registration redirect other user to: " + url);
+				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
+				dispatcher.forward(request,response);
+			}
+			res = null;
+			res = MysqlCon.insert_user(first_name, last_name, email, password, address, city, state, zip, country, 2);
+			if(!res) {
+				// handle non-working insert
+			}
+			// perform store registration
+			User currentUser = MysqlCon.getUser(email);
+			res = MysqlCon.insert_store(currentUser.getUserId(), store_name);
 			if(!res) {
 				// handle non-working insert
 			}
 			String url = "/views/login.jsp";
-			System.out.println("registration success redirect to: " + url);
+			System.out.println("store registration success redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
 		} else {
 			// display errors
-			String url = "/views/registration.jsp";
-			System.out.println("registration redirect errors to: " + url);
+			String url = "/views/store_registration.jsp";
+			System.out.println("store registration redirect errors to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
 		}

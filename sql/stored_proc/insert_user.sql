@@ -15,7 +15,8 @@ CREATE PROCEDURE `FastrSale`.`insert_users` (
     city VARCHAR(35),
     state VARCHAR(35),
     zip VARCHAR(9),
-    country VARCHAR(70)
+    country VARCHAR(70),
+    role SMALLINT(5)
 )
 BEGIN
     INSERT INTO `FastrSale`.`users` VALUES(
@@ -30,7 +31,7 @@ BEGIN
         zip,
         country,
         NOW(),
-        1
+        role
     );
 END$$
 

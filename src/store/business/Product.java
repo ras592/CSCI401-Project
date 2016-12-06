@@ -4,21 +4,21 @@ import java.io.Serializable;
 //import java.util.ArrayList;
 
 public class Product implements Serializable {
-	private Long productId;
+	private int productId;
 	private String productName;
 	private String description;
 	private double price;
 	private String[] productImageURLs;
-	private Long userId;
-	private Long storeId;
+	private int userId;
+	private int storeId;
 	
 	public Product() {}
 
-	public Long getProductId() {
+	public int getProductId() {
 		return productId;
 	}
 
-	public void setProductId(Long productId) {
+	public void setProductId(int productId) {
 		this.productId = productId;
 	}
 
@@ -54,19 +54,19 @@ public class Product implements Serializable {
 		this.productImageURLs = productImageURLs;
 	}
 
-	public Long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
-	public Long getStoreId() {
+	public int getStoreId() {
 		return storeId;
 	}
 
-	public void setStoreId(Long storeId) {
+	public void setStoreId(int storeId) {
 		this.storeId = storeId;
 	}
 }

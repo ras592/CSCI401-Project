@@ -1,7 +1,15 @@
 <jsp:include page="/views/includes/header.jsp" />
 <div class="container">
-	<form action="/FastrSale/registration" method="POST"
+	<form action="/FastrSale/store_registration" method="POST"
 		class="form-horizontal">
+		<div class="form-group">
+			<label for="store_name" class="col-sm-2 control-label">Store
+				Name</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="store_name"
+					name="store_name" placeholder="Store Name">
+			</div>
+		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-2 control-label">Email</label>
 			<div class="col-sm-10">
@@ -90,6 +98,5 @@
 			</div>
 		</div>
 	</form>
-	<a href="/FastrSale/store_registration">Become a Seller!</a>
 </div>
 <jsp:include page="/views/includes/footer.jsp" />

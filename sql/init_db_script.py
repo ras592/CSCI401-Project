@@ -8,31 +8,41 @@ run_base_str = "mysql -u {} -p{} FastrSale ".format(user, password)
 init_stored_procs = [
     os.path.join('.', 'stored_proc', 'create_roles.sql'),
     os.path.join('.', 'stored_proc', 'create_users.sql'),
+    os.path.join('.', 'stored_proc', 'create_stores.sql'),
     os.path.join('.', 'stored_proc', 'init_roles.sql'),
-    os.path.join('.', 'stored_proc', 'init_users.sql')
+    os.path.join('.', 'stored_proc', 'init_users.sql'),
+    os.path.join('.', 'stored_proc', 'init_stores.sql')
 ]
 
 init_stored_proc_names = [
     'create_roles',
     'create_users',
+    'create_stores',
     'init_roles',
-    'init_users'
+    'init_users',
+    'init_stores'
 ]
 
 other_stored_procs = [
     os.path.join('.', 'stored_proc', 'insert_user.sql'),
+    os.path.join('.', 'stored_proc', 'insert_store.sql'),
     os.path.join('.', 'stored_proc', 'select_roles.sql'),
     os.path.join('.', 'stored_proc', 'select_users.sql'),
     os.path.join('.', 'stored_proc', 'validate_user.sql'),
-    os.path.join('.', 'stored_proc', 'get_user.sql')
+    os.path.join('.', 'stored_proc', 'validate_store_name.sql'),
+    os.path.join('.', 'stored_proc', 'get_user.sql'),
+    os.path.join('.', 'stored_proc', 'get_store.sql')
 ]
 
 other_stored_proc_names = [
     'select_roles',
     'select_users',
     'validate_user',
+    'validate_store_name',
     'insert_users',
-    'get_user'
+    'insert_store',
+    'get_user',
+    'get_store'
 ]
 
 # run create db procedure first

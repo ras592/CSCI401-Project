@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class User implements Serializable {
-	// should userId be final static Long
-	private Long userId;
+	private int userId;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -17,12 +16,28 @@ public class User implements Serializable {
 	private int role_id; 
 
 	public User() {}
+	
+	public User(int userId, String firstName, String lastName,
+			String email, String address, String city,
+			String state, String zip, String country,
+			int role_id) {
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.country = country;
+		this.role_id = role_id;
+	}
 
-	public Long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 

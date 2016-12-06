@@ -1,5 +1,5 @@
 /*
-Inserts new entry to the user table.
+Checks if email and password are valid.
 */
 USE `FastrSale`;
 DROP procedure IF EXISTS `validate_user`;

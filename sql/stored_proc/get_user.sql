@@ -10,7 +10,8 @@ CREATE PROCEDURE `FastrSale`.`get_user` (
     input_email VARCHAR(60)
 )
 BEGIN
-    SELECT first_name,
+    SELECT id,
+        first_name,
         last_name,
         email,
         address,

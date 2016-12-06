@@ -1,7 +1,13 @@
 package store.utility;
 import java.sql.*;
+
 import store.business.*;
 
+/**
+ * TODO Add stores table
+ * @author richardsharrott
+ *
+ */
 public class MysqlCon {
 	private static String MYSQL_PASS = "pass1234";
 	private static String MYSQL_URL = "jdbc:mysql://localhost:3306/";
@@ -18,7 +24,7 @@ public class MysqlCon {
 	}
 	
 	public static void getUsers() {
-		try{  
+		try{
 			Connection con = MysqlCon.connectMysqlConnection();
 			CallableStatement statement = con.prepareCall("{CALL select_users()}");
 			ResultSet rs = statement.executeQuery();
@@ -53,6 +59,25 @@ public class MysqlCon {
 		return returnVal;
 	}
 	
+	public static Boolean validateStoreName(String store_name) {
+		Boolean returnVal = false;
+		try{
+			Connection con = MysqlCon.connectMysqlConnection();
+			CallableStatement statement = con.prepareCall("{CALL validate_store_name(?)}");
+			statement.setString(1, store_name);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				if (rs.getInt(1) == 1) {
+					returnVal = true;
+				}
+			}
+			con.close();
+		} catch(Exception e){
+			System.out.println(e);
+		}
+		return returnVal;
+	}
+	
 	public static User getUser(String email) {
 		User returnVal = null;
 		try{
@@ -61,6 +86,7 @@ public class MysqlCon {
 			statement.setString(1, email);
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
+				int userId = rs.getInt("id");
 				String first_name = rs.getString("first_name");
 				String last_name = rs.getString("last_name");
 				String ret_email = rs.getString("email");
@@ -73,17 +99,31 @@ public class MysqlCon {
 				/*System.out.format("%s, %s, %s, %s, %s, %s, %s, %s, %d\n", 
 						first_name, last_name, ret_email, address,
 						city, state, zip, country, role_id);*/
-				returnVal = new User();
-				/* But WHY zero-args? */
-				returnVal.setFirstName(first_name);
-				returnVal.setLastName(last_name);
-				returnVal.setEmail(ret_email);
-				returnVal.setAddress(address);
-				returnVal.setCity(city);
-				returnVal.setState(state);
-				returnVal.setZip(zip);
-				returnVal.setCountry(country);
-				returnVal.setRole_id(role_id);
+				returnVal = new User(userId, first_name, last_name, ret_email,
+						address, city, state, zip, country, role_id);
+			}
+			con.close();
+		} catch(Exception e){
+			System.out.println(e);
+		}
+		return returnVal;
+	}
+	
+	public static Store getStores(String store_name) {
+		Store returnVal = null;
+		try{
+			Connection con = MysqlCon.connectMysqlConnection();
+			CallableStatement statement = con.prepareCall("{CALL get_store(?)}");
+			statement.setString(1, store_name);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				int storeId = rs.getInt("id");
+				String ret_store_name = rs.getString("store_name");
+				int userId = rs.getInt("user_id");
+				/*System.out.format("%s, %s, %s, %s, %s, %s, %s, %s, %d\n", 
+						first_name, last_name, ret_email, address,
+						city, state, zip, country, role_id);*/
+				returnVal = new Store(storeId, ret_store_name, userId);
 			}
 			con.close();
 		} catch(Exception e){
@@ -93,11 +133,11 @@ public class MysqlCon {
 	}
 	
 	public static Boolean insert_user(String first_name, String last_name, String email, String password,
-			String address, String city, String state, String zip, String country) {
+			String address, String city, String state, String zip, String country, int role_id) {
 		// return false if it doesn't work
 		try{
 			Connection con = MysqlCon.connectMysqlConnection();
-			CallableStatement statement = con.prepareCall("{CALL insert_users(?,?,?,?,?,?,?,?,?)}");
+			CallableStatement statement = con.prepareCall("{CALL insert_users(?,?,?,?,?,?,?,?,?,?)}");
 			statement.setString(1, first_name);
 			statement.setString(2, last_name);
 			statement.setString(3, email);
@@ -107,6 +147,23 @@ public class MysqlCon {
 			statement.setString(7, state);
 			statement.setString(8, zip);
 			statement.setString(9, country);
+			statement.setInt(10, role_id);
+			
+			statement.executeQuery();
+			con.close();
+		} catch(Exception e){
+			System.out.println(e);
+		}
+		return true;
+	}
+	
+	public static Boolean insert_store(int user_id, String store_name) {
+		// return false if it doesn't work
+		try{
+			Connection con = MysqlCon.connectMysqlConnection();
+			CallableStatement statement = con.prepareCall("{CALL insert_store(?,?)}");
+			statement.setString(1, store_name);
+			statement.setInt(2, user_id);
 			
 			statement.executeQuery();
 			con.close();
