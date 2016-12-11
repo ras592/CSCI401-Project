@@ -34,6 +34,13 @@ I hope to use this project to develop a better understanding of complex web appl
 
 ### TODO:
 
+[ ] Insert, Init, Get products
+[ ] Insert, Init, Get categories
+[ ] Make products header
+[ ] Handle file uploads
+[ ] Have products populate home page
+[ ] Have personal page should modules of products
+
 [ ] Authentication
 [ ] Registration
 [ ] Email

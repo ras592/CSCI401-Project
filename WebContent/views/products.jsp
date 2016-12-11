@@ -23,6 +23,8 @@
         <!-- Bootstrap CDN -->
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
         <link rel="stylesheet" href="/FastrSale/lib/bootstrap-3.3.7/css/bootstrap.min.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/FastrSale/css/main.css" />
         <!-- JavaScript CDNs -->
         <!-- jQuery CDN -->
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" defer></script> -->
@@ -30,6 +32,8 @@
         <!-- Bootstrap JS CDN -->
         <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous" defer></script> -->
         <script src="/FastrSale/lib/bootstrap-3.3.7/js/bootstrap.min.js" defer></script>
+        <!-- Products JS -->
+        <script src="/FastrSale/js/products.js" defer></script>
     </head>
     <body>
         <div class="navbar navbar-inverse" role="navigation">
@@ -74,6 +78,6 @@
                 </div>
             </div>
         </div>
-	<div id="product" class="container"></div>
+	<div id="products" class="container"></div>
 </div>
 <jsp:include page="/views/includes/footer.jsp" />

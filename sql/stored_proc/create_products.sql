@@ -13,13 +13,15 @@ BEGIN
 	DROP TABLE IF EXISTS `FastrSale`.`products`;
     CREATE TABLE `FastrSale`.`products`(
 		id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        product_name VARCHAR(70) NOT NULL,
-        product_price FLOAT() NOT NULL,
-        product_quantity INT() NOT NULL,
+        product_name VARCHAR(100) NOT NULL,
+		description TEXT NOT NULL,
+        price FLOAT NOT NULL,
+        quantity INT NOT NULL,
         date_entered TIMESTAMP,
-        seller_id SMALLINT UNSIGNED NOT NULL,
-        category_id SMALLINT UNSIGNED NOT NULL,
-        FOREIGN KEY (seller_id) REFERENCES `FastrSale`.`sellers`(id),
+		image_urls TEXT NOT NULL,
+        store_id INT UNSIGNED NOT NULL,
+        category_id INT UNSIGNED NOT NULL,
+        FOREIGN KEY (store_id) REFERENCES `FastrSale`.`stores`(id),
         FOREIGN KEY (category_id) REFERENCES `FastrSale`.`categories`(id),
         INDEX `products`(product_name)
 	);

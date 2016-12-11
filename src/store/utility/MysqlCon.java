@@ -172,4 +172,23 @@ public class MysqlCon {
 		}
 		return true;
 	}
+	
+	public static Product getProductById(int product_id) {
+		Product returnVal = null;
+		try{
+			Connection con = MysqlCon.connectMysqlConnection();
+			CallableStatement statement = con.prepareCall("{CALL get_product_by_id(?)}");
+			statement.setInt(1, product_id);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				returnVal = new Product(rs.getInt("id"), rs.getString("product_name"), rs.getString("description"),
+						rs.getDouble("price"), rs.getInt("quantity"), rs.getString("image_urls"),
+						rs.getInt("store_id"), rs.getInt("category_id"));
+			}
+			con.close();
+		} catch(Exception e){
+			System.out.println(e);
+		}
+		return returnVal;
+	}
 }

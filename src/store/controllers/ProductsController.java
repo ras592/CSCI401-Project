@@ -16,13 +16,13 @@ import store.business.Product;
 /**
  * Servlet implementation class ProductController
  */
-public class ProductController extends HttpServlet {
+public class ProductsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductController() {
+    public ProductsController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,24 +30,8 @@ public class ProductController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String requestURI = request.getRequestURI();
-		System.out.println(requestURI);
-		if (requestURI.endsWith("/product")) {
-			// request ended with product
-			// no need to check for id
-			
-		} else if(RoutingUtility.getPathWithoutId(requestURI).endsWith("/product")) {
-			// id following path
-			// route to specific product
-			String idStr = RoutingUtility.getId(requestURI);
-			request.setAttribute("productId", idStr);
-			Product product = MysqlCon.getProductById(Integer.parseInt(idStr));
-			request.setAttribute("product", product);
-		}
-		
-		String url = "/views/product.jsp";
-		System.out.println(url);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		String url = "/views/products.jsp";
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request,response);
 	}

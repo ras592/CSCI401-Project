@@ -40,6 +40,14 @@
     <servlet-name>StoreRegistrationController</servlet-name>
     <servlet-class>store.controllers.StoreRegistrationController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ProductsController</servlet-name>
+  	<servlet-class>store.controllers.ProductsController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ProductAPIController</servlet-name>
+  	<servlet-class>store.controllers.ProductAPIController</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>home</servlet-name>
     <url-pattern>/home</url-pattern>
@@ -67,6 +75,14 @@
   <servlet-mapping>
     <servlet-name>ProductController</servlet-name>
     <url-pattern>/product/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ProductsController</servlet-name>
+    <url-pattern>/products</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ProductAPIController</servlet-name>
+    <url-pattern>/products/api</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>index</servlet-name>

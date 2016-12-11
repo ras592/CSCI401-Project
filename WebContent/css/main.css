@@ -1,0 +1,13 @@
+.product > .thumbnail {
+	background-color: #ccc;
+}
+img.product {
+	max-height: 330px;
+	background-color: #fff;
+}
+span.error {
+	color: red;
+}
+form.add_to_cart :first-child {
+	margin-right: 10px;
+}
