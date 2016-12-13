@@ -30,6 +30,9 @@
         <div class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <div class="navbar-header">
+	                <a class="navbar-brand" href="./">
+	                    <img src="./img/run.svg" alt="FastrSale Logo" class="logo_banner">
+	                </a>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
@@ -42,7 +45,6 @@
                     <ul class="nav navbar-nav">
                         <%  if (authenticated) { %>
                         <li><a href="./products">Browse Products</a></li>
-                        <li><a href="./stores">Browse Sellers</a></li>
                         	<%  if (role_id == 2) { %>
                         	<li class="dropdown">
 	                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Store Account <b class="caret"></b></a>
@@ -57,6 +59,13 @@
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (authenticated) { %>
                         <!-- if user is authenticated -->
+				        <li id="shopping-cart" class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> <span id="shopping-quantity">0</span> <span class="caret"></span></a>
+				          <ul id="shopping-cart" class="dropdown-menu dropdown-cart" role="menu">
+				              <li class="divider"></li>
+				              <li><a class="text-center" href="./view_cart">View Cart</a></li>
+				          </ul>
+				        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
                             <ul class="dropdown-menu">

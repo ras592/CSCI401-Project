@@ -1,14 +1,18 @@
 package store.controllers;
 
 import java.io.IOException;
+
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import store.business.User;
 import store.utility.MysqlCon;
+import store.utility.MailUtil;
 
 public class RegistrationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -77,6 +81,16 @@ public class RegistrationController extends HttpServlet {
 			if(!res) {
 				// handle non-working insert
 			}
+			try {
+	            MailUtil.sendMail(email, "Sign Up", "<h1>Thanks for signing up!</h1>", true);
+	        }
+	        catch(MessagingException e) {
+	            this.log(
+	                "Unable to send email. \n" +
+	                "=====================================\n" +
+	                "TO: " + email + "\n" +
+	                "FROM: us\n");
+	        }
 			String url = "/views/login.jsp";
 			System.out.println("registration success redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);

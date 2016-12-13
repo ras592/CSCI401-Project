@@ -4,10 +4,13 @@ var products = (function() {
     var $button_add_to_cart = $('button.add_to_cart');
     var $search_input = $('input#search');
     var $search_button = $('#search_button');
+    var $shopping_cart = $('li#shopping-cart');
+    var $shopping_cart_body = $('ul#shopping-cart');
     var resp_cache = null;
     var query = "";
 
     $products.delegate('button.add_to_cart', 'click', _addToCart);
+    $shopping_cart_body.delegate('button.remove-shopping-cart', 'click', _removeShoppingCartProduct);
     $search_input.keypress(_renderSearch);
     $search_button.click(_renderButtonSearch);
 
@@ -15,13 +18,87 @@ var products = (function() {
         e.preventDefault();
         $this = $(this);
         if(!$this.hasClass('disabled')) {
-            console.log($this.attr('data-value'));
+            var url = '/FastrSale/cart/api',
+                args = {
+                    "id": $this.attr('data-value')
+                },
+        		callback = function(resp) {
+                    console.log("res");
+                    console.log(resp);
+                    _requestShoppingCart();
+        		};
+        	$.post(url, args, callback);
         }
+    }
+
+    function _toShoppingItem(obj) {
+        return ['<li>',
+            '<span class="item">',
+                '<span class="item-left">',
+                    '<img src="' + _toImageURL(obj.productImageURLs) + '" alt="missing product thumbnail" />',
+                    '<span class="item-info">',
+                        '<span>' + obj.productName + '</span>',
+                        '<span>$' + obj.price + '</span>',
+                    '</span>',
+                '</span>',
+                '<span class="item-right">',
+                    '<button class="btn btn-xs btn-danger pull-right remove-shopping-cart" data-value="' + obj.productId + '">x</button>',
+                '</span>',
+            '</span>',
+      '</li>'].join('');
+    }
+
+    function _appendItem(item) {
+        console.log(item);
+        $shopping_cart_body.append(_toShoppingItem(item));
+    }
+
+    function _renderShoppingCart(products) {
+        $shopping_cart_body.html('');
+        for(var product in products) {
+            _appendItem(products[product]);
+        }
+        $shopping_cart_body.append('<li class="divider"></li>');
+        $shopping_cart_body.append('<li><a class="text-center" href="/FastrSale/views/view_cart">View Cart</a></li>');
+        console.log(products.length);
+        $('span#shopping-quantity').text(products.length);
+    }
+
+    function _removeShoppingCartProduct(e) {
+        e.preventDefault();
+        $this = $(this);
+        if(!$this.hasClass('disabled')) {
+            var url = '/FastrSale/cart/api',
+                args = {
+                    "id": $this.attr('data-value')
+                },
+        		callback = function(resp) {
+                    console.log("del");
+                    console.log(resp);
+        			_requestShoppingCart();
+        		};
+        	$.get(url, args, callback);
+        }
+    }
+
+    function _requestShoppingCart(arg) {
+        var args = {};
+        if(arg !== undefined) {
+            args = arg;
+        }
+
+    	var url = '/FastrSale/cart/api',
+    		callback = function(resp) {
+                // resp_cache = resp;
+                console.log("req");
+                console.log(resp);
+    			_renderShoppingCart(resp);
+    		};
+    	$.get(url, args, callback);
     }
 
     function checkQuery(obj) {
         query = $('input#search').val();
-        console.log(query);
         return obj.productName.indexOf(query) != -1;
     }
 
@@ -140,6 +217,7 @@ var products = (function() {
         if(param === 'default') {
         	_requestProducts();
         }
+        _requestShoppingCart();
     }
 
     return {
