@@ -11,9 +11,9 @@ CREATE PROCEDURE `FastrSale`.`insert_product` (
     description TEXT,
     price FLOAT,
     quantity INT,
-    image_urls TIMESTAMP,
+    image_urls TEXT,
     store_id INT(10),
-    user_id INT(10)
+    category_id INT(10)
 
 )
 BEGIN
@@ -26,7 +26,7 @@ BEGIN
         NOW(),
         image_urls,
         store_id,
-        user_id
+        category_id
     );
 END$$
 

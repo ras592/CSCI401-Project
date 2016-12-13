@@ -31,7 +31,7 @@ public class LoginController extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(session.getAttribute("loggedin") != null && 
 				(Boolean)session.getAttribute("loggedin") == true) {
-			String url = "/home.jsp";
+			String url = "/index.jsp";
 			System.out.println("login redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);
@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet {
 			// set first name last name
 			User currentUser = MysqlCon.getUser(email);
 			request.getSession(true).setAttribute("current_user", currentUser);
-			String url = "/home.jsp";
+			String url = "/index.jsp";
 			System.out.println("login success redirect to: " + url);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(url);
 			dispatcher.forward(request,response);

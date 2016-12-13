@@ -22,14 +22,9 @@
 
         <!-- Bootstrap CDN -->
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-        <link rel="stylesheet" href="lib/bootstrap-3.3.7/css/bootstrap.min.css" />
-        <!-- JavaScript CDNs -->
-        <!-- jQuery CDN -->
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" defer></script> -->
-        <script src="lib/jquery-3.1.1.min.js" defer></script>
-        <!-- Bootstrap JS CDN -->
-        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous" defer></script> -->
-        <script src="lib/bootstrap-3.3.7/js/bootstrap.min.js" defer></script>
+        <link rel="stylesheet" href="./lib/bootstrap-3.3.7/css/bootstrap.min.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="./css/main.css" />
     </head>
     <body>
         <div class="navbar navbar-inverse" role="navigation">
@@ -41,16 +36,21 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/FastrSale/">Fastr ecommerce</a>
+                    <a class="navbar-brand" href="./">Fastr Sale</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="/FastrSale/home">Home</a></li>
                         <%  if (authenticated) { %>
-                        <li><a href="/FastrSale/products">Browse Products</a></li>
-                        <li><a href="/FastrSale/stores">Browse Sellers</a></li>
+                        <li><a href="./products">Browse Products</a></li>
+                        <li><a href="./stores">Browse Sellers</a></li>
                         	<%  if (role_id == 2) { %>
-                        	<li><a href="/FastrSale/store_account">Store Account</a></li>
+                        	<li class="dropdown">
+	                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Store Account <b class="caret"></b></a>
+	                            <ul class="dropdown-menu">
+	                        		<li><a href="./store_account">Inventory Management</a></li>
+	                        		<li><a href="./add_product">Add Product</a></li>
+	                        	</ul>
+                        	</li>
                         	<% } %>
                         <% } %>
                     </ul>
@@ -62,13 +62,13 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#">Change Password</a></li>
                                 <li><a href="#">Change Email</a></li>
-                                <li><a href="/FastrSale/logout">Sign Out</a></li>
+                                <li><a href="./logout">Sign Out</a></li>
                             </ul>
                         </li>
                         <% } else { %>
                         <!-- if user is not authenticated -->
-                        <li><a href="/FastrSale/registration">Sign Up</a></li>
-                        <li><a href="/FastrSale/login">Sign In</a></li>
+                        <li><a href="./registration">Sign Up</a></li>
+                        <li><a href="./login">Sign In</a></li>
                         <% } %>
                     </ul>
                 </div>

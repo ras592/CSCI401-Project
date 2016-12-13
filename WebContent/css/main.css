@@ -11,3 +11,15 @@ span.error {
 form.add_to_cart :first-child {
 	margin-right: 10px;
 }
+td.description {
+	overflow-y: scroll;
+}
+img.inventory {
+	max-height: 100px;
+}
+div#search {
+	margin-bottom: 20px;
+}
+input#search {
+	margin-bottom: 0px;
+}

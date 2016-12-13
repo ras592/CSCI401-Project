@@ -1,10 +1,12 @@
 package store.utility;
 import java.sql.*;
+import java.util.ArrayList;
 
 import store.business.*;
 
 /**
  * TODO Add stores table
+ * TODO Change how db connections are handled
  * @author richardsharrott
  *
  */
@@ -14,7 +16,7 @@ public class MysqlCon {
 	private static String MYSQL_DATABASE_NAME = "fastrsale";
 	private static String MYSQL_USERNAME = "root";
 	
-	public static Connection connectMysqlConnection() throws Exception {
+	public static Connection connectMysqlConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");  
 		Connection con = DriverManager.getConnection(  
 				MysqlCon.MYSQL_URL + MysqlCon.MYSQL_DATABASE_NAME,
@@ -190,5 +192,250 @@ public class MysqlCon {
 			System.out.println(e);
 		}
 		return returnVal;
+	}
+	
+	/*
+		Note this code was written even though I created a stored procedure to make sure
+		I know how to do all types of queries.
+	 */
+	public static ArrayList<Category> getAllCategories() {
+		Connection con = null;
+		ArrayList<Category> result = new ArrayList<Category>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM `FastrSale`.`categories`";
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				int categoryId = rs.getInt("id");
+				String categoryName = rs.getString("category_name");
+				String categoryImage = rs.getString("category_image");
+				
+				result.add(new Category(categoryId, categoryName, categoryImage));
+			}
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closeResultSet(rs);
+			MysqlCon.closeStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return result;
+	}
+	
+	public static ArrayList<Product> getAllProducts() {
+		Connection con = null;
+		ArrayList<Product> result = new ArrayList<Product>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM `FastrSale`.`products`";
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				result.add(new Product(rs.getInt("id"), rs.getString("product_name"), rs.getString("description"),
+						rs.getDouble("price"), rs.getInt("quantity"), rs.getString("image_urls"),
+						rs.getInt("store_id"), rs.getInt("category_id")));
+			}
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closeResultSet(rs);
+			MysqlCon.closeStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return result;
+	}
+	
+	public static ArrayList<Product> getAllProductsByStore(int id) {
+		Connection con = null;
+		ArrayList<Product> result = new ArrayList<Product>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM `FastrSale`.`products` WHERE store_id=?";
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				result.add(new Product(rs.getInt("id"), rs.getString("product_name"), rs.getString("description"),
+						rs.getDouble("price"), rs.getInt("quantity"), rs.getString("image_urls"),
+						rs.getInt("store_id"), rs.getInt("category_id")));
+			}
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closeResultSet(rs);
+			MysqlCon.closeStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return result;
+	}
+	
+	public static ArrayList<Product> getAllProductsByCategory(int id) {
+		Connection con = null;
+		ArrayList<Product> result = new ArrayList<Product>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM `FastrSale`.`products` WHERE category_id=?";
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				result.add(new Product(rs.getInt("id"), rs.getString("product_name"), rs.getString("description"),
+						rs.getDouble("price"), rs.getInt("quantity"), rs.getString("image_urls"),
+						rs.getInt("store_id"), rs.getInt("category_id")));
+			}
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closeResultSet(rs);
+			MysqlCon.closeStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return result;
+	}
+	
+	public static void removeProduct(int id) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		String query = "DELETE FROM `FastrSale`.`products` WHERE id=?";
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, id);
+			Boolean success = stmt.execute();
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closePreparedStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+	}
+	
+	public static Store getStoreByUserId(int userId) {
+		Connection con = null;
+		Store result = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM `FastrSale`.`stores` WHERE user_id=?";
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, userId);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				int storeId = rs.getInt("id");
+				String storeName = rs.getString("store_name");
+				userId = rs.getInt("user_id");
+				
+				result = new Store(storeId, storeName, userId);
+			}
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closeResultSet(rs);
+			MysqlCon.closePreparedStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return result;
+	}
+	
+	public static Boolean insertProduct(String productName, String description,
+			double price, int quantity, String imageURL, int storeId, int categoryId) {
+		Connection con = null;
+		Store result = null;
+		CallableStatement stmt = null;
+		
+		try {
+			con = MysqlCon.connectMysqlConnection();
+			stmt = con.prepareCall("{CALL insert_product(?, ?, ?, ?, ?, ?, ?)}");
+			stmt.setString(1, productName);
+			stmt.setString(2, description);
+			stmt.setDouble(3, price);
+			stmt.setInt(4, quantity);
+			stmt.setString(5, imageURL);
+			stmt.setInt(6, storeId);
+			stmt.setInt(7, categoryId);
+			
+			stmt.executeQuery();
+		} catch(SQLException ex1) {
+			System.out.println(ex1);
+		} catch (ClassNotFoundException ex2) { 
+			System.out.println(ex2);
+		} finally {
+			MysqlCon.closePreparedStatement(stmt);
+			MysqlCon.freeConnection(con);
+		}
+		
+		return true;
+	}
+	
+	private static void closeResultSet(ResultSet rs) {
+		try {
+			if(rs != null) {
+				rs.close();
+			}
+		} catch(SQLException ex) {
+			System.out.println(ex);
+		}
+	}
+	
+	private static void closeStatement(Statement stmt) {
+		try {
+			if(stmt != null) {
+				stmt.close();
+			}
+		} catch(SQLException ex) {
+			System.out.println(ex);
+		}
+	}
+	
+	private static void closePreparedStatement(Statement ps) {
+		try {
+			if(ps != null) {
+				ps.close();
+			}
+		} catch(SQLException ex) {
+			System.out.println(ex);
+		}
+	}
+
+	private static void freeConnection(Connection con) {
+		try {
+			if(con != null) {
+				con.close();
+			}
+		} catch(SQLException ex) {
+			System.out.println(ex);
+		}
 	}
 }
