@@ -9,7 +9,7 @@
 	User current_user = (User)request.getSession().getAttribute("current_user");
 	Boolean authenticated = false;
 	int role_id = 1;
-	String first_name = "";
+	String first_name = "Stranger";
 	
 	if (current_user != null) {
 		first_name = current_user.getFirstName();
@@ -46,4 +46,10 @@
             </div>
            <% } %>
         </div>
+        
+<script>
+	var initProductsObj = {
+		init : true
+	};
+</script>
 <jsp:include page="/views/includes/footer.jsp" />

@@ -6,6 +6,15 @@ The AmazonClone is an E-Commerce website that caters to two users:
 1. Sellers: Users can open up their own e-commerce page and add products to their store. Buyers can then purchase the seller's products. Sellers will also have a page to display all their products and subpages for each product with reviews and pictures.
 2. Buyers: Users can purchase any of the products that sellers are willing to sell at AmazonClone. Users should be able to see purchase history. User purchases will be emulated with a shopping cart and checkout phase. Users should be able to search through the seller’s store and products (time permitting).
 
+### Install Instructions:
+- Build the database run the python script init_db_script.py using Python 2.
+	- This will create the database, tables, insert dummy data, and load stored procedures.
+- Run the store.utility.FileUtility.java in the console to initialize file uploads.
+- Now you are ready to run the web app on TomCat 7. 
+
+NOTE: the initialization process will make most of the application empty and therefore requires
+creating stores, products and file uploads to make the pages populate with products.
+
 ### Details:
 
 Using a combination of database, JSP, Servlets, Tomcat, jQuery and Bootstrap AmazonClone will have the following pages:
@@ -34,20 +43,20 @@ I hope to use this project to develop a better understanding of complex web appl
 
 ### TODO:
 
-[ ] Insert, Init, Get products
-[ ] Insert, Init, Get categories
-[ ] Make products header
-[ ] Handle file uploads
-[ ] Have products populate home page
-[ ] Have personal page should modules of products
+[x] Insert, Init, Get products
+[x] Insert, Init, Get categories
+[x] Make products header
+[x] Handle file uploads
+[x] Have products populate home page
+[x] Have personal page should modules of products
 
-[ ] Authentication
-[ ] Registration
-[ ] Email
-[ ] Create Store
-[ ] Create Product
+[x] Authentication
+[x] Registration
+[x] Email
+[x] Create Store
+[x] Create Product
 [ ] Display Store
-[ ] Display Product
+[x] Display Product
 [ ] Create Review
 [ ] Display Review
 [ ] Shopping Cart

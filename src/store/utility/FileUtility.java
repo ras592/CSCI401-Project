@@ -53,8 +53,52 @@ public class FileUtility {
 		return getUploadsDirectory() + File.separator + filename;
 	}
 	
+	public static void initUploads() {
+		File uploadsDir = getUploadsDirectory();
+		if (uploadsDir.exists()) {
+			if(getUploadsLedger().exists()) {
+				// all good to go
+				System.out.println("File upload initialized.");
+			} else {
+				// create ledger
+				PrintWriter output = null;
+				try {
+					output = new PrintWriter(getUploadsLedger());
+					output.print(0);
+					System.out.println("File upload initialized.");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					System.out.println("Error in creating upload_file_list.txt.");
+				} finally {
+					if(output != null) {
+						output.close();
+					}
+				}
+			}
+		} else {
+			// create uploads dir
+			if (uploadsDir.mkdir()) {
+				// create ledger
+				PrintWriter output = null;
+				try {
+					output = new PrintWriter(getUploadsLedger());
+					output.print(0);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					System.out.println("Error in creating upload_file_list.txt.");
+				} finally {
+					if(output != null) {
+						output.close();
+					}
+				}
+			} else {
+				System.out.println("Error in creating uploads directory.");
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
+		initUploads(); // initializes file upload
 		System.out.println(getUploadsDirectory());
-		System.out.println(uniqueFileName());
 	}
 }
